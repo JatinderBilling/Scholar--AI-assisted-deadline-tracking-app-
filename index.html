@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scoller — Student Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <header>
+    <div class="logo">Scoller <span>/ deadline tracker</span></div>
+    <div class="header-date" id="headerDate"></div>
+  </header>
+
+  <main>
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <div class="panel-section">
+        <div class="section-label">Upload Course Outline</div>
+        <div class="upload-zone" id="uploadZone">
+          <input type="file" id="fileInput" accept=".txt,.pdf,.doc,.docx,text/*" multiple>
+          <div class="upload-icon">📄</div>
+          <div class="upload-text">
+            <strong>Drop files here</strong> or click to browse<br>
+            .txt, .pdf, .doc — AI will extract deadlines
+          </div>
+        </div>
+      </div>
+      <div class="panel-section" style="padding-bottom: 12px;">
+        <div class="section-label">Courses</div>
+      </div>
+      <div class="courses-list" id="coursesList">
+        <div class="empty-courses">Upload a course outline to get started. AI will automatically extract all your deadlines.</div>
+      </div>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <div class="right-header">
+        <div class="right-title" id="panelTitle">All Deadlines</div>
+        <button class="btn btn-primary" onclick="openAddModal()">＋ Add Deadline</button>
+      </div>
+
+      <div class="stats-bar" id="statsBar">
+        <div class="stat"><div class="stat-num" id="statTotal">0</div><div class="stat-label">Total</div></div>
+        <div class="stat"><div class="stat-num" id="statOverdue" style="color:var(--danger)">0</div><div class="stat-label">Overdue</div></div>
+        <div class="stat"><div class="stat-num" id="statSoon" style="color:var(--warn)">0</div><div class="stat-label">This Week</div></div>
+        <div class="stat"><div class="stat-num" id="statDone" style="color:var(--ok)">0</div><div class="stat-label">Done</div></div>
+      </div>
+
+      <div class="deadlines-container" id="deadlinesContainer">
+        <div class="filter-bar" id="filterBar">
+          <button class="filter-btn active" onclick="setFilter('all', this)">All</button>
+          <button class="filter-btn" onclick="setFilter('overdue', this)">Overdue</button>
+          <button class="filter-btn" onclick="setFilter('soon', this)">This Week</button>
+          <button class="filter-btn" onclick="setFilter('upcoming', this)">Upcoming</button>
+          <button class="filter-btn" onclick="setFilter('done', this)">Completed</button>
+        </div>
+        <div id="deadlinesList"></div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Add Deadline Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal">
+      <div class="modal-title">Add Deadline</div>
+      <div class="form-group">
+        <label class="form-label">Task / Assignment</label>
+        <input type="text" class="form-input" id="inputTitle" placeholder="e.g. Assignment 2 — Research Paper">
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Course</label>
+          <select class="form-input" id="inputCourse">
+            <option value="General">General</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Type</label>
+          <select class="form-input" id="inputType">
+            <option>Assignment</option>
+            <option>Quiz</option>
+            <option>Exam</option>
+            <option>Project</option>
+            <option>Lab</option>
+            <option>Reading</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="form-label">Due Date</label>
+          <input type="date" class="form-input" id="inputDate">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Weight (%)</label>
+          <input type="number" class="form-input" id="inputWeight" placeholder="e.g. 20" min="0" max="100">
+        </div>
+      </div>
+      <div class="modal-actions">
+        <button class="btn btn-ghost" onclick="closeModal()">Cancel</button>
+        <button class="btn btn-primary" onclick="addDeadline()">Add Deadline</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
